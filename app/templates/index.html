@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}" />
+    <!-- Add other head elements like CSS files and JavaScript here -->
+  </head>
+  <body>
+    <header>
+      <h1>{{ header_text }}</h1>
+    </header>
+
+    <main>
+      <!-- Audio file upload form -->
+      <section id="upload-section">
+        <h2>Upload Audio File</h2>
+        <form
+          action="{{ url_for('audio.upload_audio') }}"
+          method="post"
+          enctype="multipart/form-data">
+          <input type="file" name="audio_file" required />
+          <button type="submit">Upload</button>
+        </form>
+      </section>
+
+      <!-- Display audio files and controls -->
+      <section id="audio-list">
+        <h2>Available Audio Files</h2>
+        {% if audio_files %}
+        <ul>
+          {% for file in audio_files %}
+          <li>
+            <audio controls>
+              <source
+                src="{{ url_for('static', filename='audio/' + file) }}"
+                type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>No audio files available.</p>
+        {% endif %}
+      </section>
+
+      <!-- Voice Clone Detection Section -->
+      <section id="detection-section">
+        <h2>Voice Clone Detection</h2>
+        <p>Submit your audio file to check for voice cloning.</p>
+        <form action="{{ url_for('audio.detect_voice_clone') }}" method="post">
+          <!-- Include hidden inputs to send necessary data for voice clone detection -->
+          <button type="submit">Detect Voice Clone</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; {{ current_year }} Audio App Company</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <!-- Add more JavaScript files and scripts here -->
+  </body>
+</html>
